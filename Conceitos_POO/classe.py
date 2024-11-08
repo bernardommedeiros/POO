@@ -23,6 +23,6 @@ print ( vendedor1.bateu_meta, vendedor1.nome, vendedor1.vendas)
 
 vendedor2 = Vendedor("Sarah")
 vendedor2.vendeu(1000)
-vendedor2.meta(899)
+vendedor2.bateu_meta(899)
 
 print ( vendedor2.bateu_meta, vendedor2.nome, vendedor2.vendas)
