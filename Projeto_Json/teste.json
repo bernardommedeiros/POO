@@ -1,9 +1,0 @@
-{
-    "tipos de dados": ["array", "char", "int", "objeto"],
-    "nome": "bernardo",
-    "int": "18",
-    "esta estudando": true,
-    "novo objeto": {
-        "curso": "TADS"
-    }
-}
