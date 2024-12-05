@@ -3,10 +3,18 @@ class Equacao:
         self.__a = a
         self.__b = b
         self.__c = c
-    def __str__(self):
-        return f"Base = {self.__b} Altura = {self.__h}"
-    def calc_area(self):
+    if a == 0: raise ValueError ("Coeficiente a inválido")
         
-    def calc_diagonal(self):
-        return math.sqrt(a*x**2 + b*x + c)
+    def delta(self):
+        return self.__b ** 2 - 4 * self.__a * self.__c
+    def x1(self):
+        return (-self.__b + math.sqrt(self.delta()))
+    def x1(self):
+        if self.delta() >= 0:
+         return (-self.__b + math.sqrt(self.delta()))
+    def x1(self):
+        return (-self.__b + math.sqrt(self.delta()))
 
+eq = Equacao(1, 0, -4)
+print(eq.delta())
+print(eq.delta)
