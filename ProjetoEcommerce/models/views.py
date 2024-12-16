@@ -1,4 +1,3 @@
-
 from models.cliente import Cliente, Clientes
 from models.categoria import Categoria, Categorias
 from models.produto import Produto, Produtos

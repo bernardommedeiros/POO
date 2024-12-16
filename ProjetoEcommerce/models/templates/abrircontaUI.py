@@ -1,21 +1,24 @@
-import streamlit as st
-import pandas as pd
-from views import View
 import time
+from view.views import View
 
 class AbrirContaUI:
+    @staticmethod
     def main():
-        st.header("Abrir Conta no Sistema")
+        print("Abrir conta no sistema")
         AbrirContaUI.inserir()
-
+    
+    @staticmethod
     def inserir():
-        nome = st.text_input("Informe o nome")
-        email = st.text_input("Informe o e-mail")
-        fone = st.text_input("Informe o fone")
-        senha = st.text_input("Informe a senha", type="password")
-        if st.button("Inserir"):
+        nome = input("Informe o nome: ")
+        email = input("Informe o e-mail: ")
+        fone = input("Informe o fone: ")
+        senha = input("Informe a senha: ")
+        
+        confirmar = input("Confirmar cadastro? (s/n): ")
+        if confirmar.lower() == "s":
             View.cliente_inserir(nome, email, fone, senha)
-            st.success("Conta criada com sucesso")
+            print("Conta criada com sucesso!")
             time.sleep(2)
-            st.rerun()
-            
+            AbrirContaUI.main()  # Para reiniciar o processo, caso desejado
+        else:
+            print("Cadastro cancelado.")

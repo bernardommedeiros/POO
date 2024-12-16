@@ -1,64 +1,104 @@
-import streamlit as st
-import pandas as pd
-from views import View
 import time
+from view.views import View
 
 class ManterClienteUI:
+    @staticmethod
     def main():
-        st.header("Cadastro de Clientes")
-        tab1, tab2, tab3, tab4 = st.tabs(["Listar", "Inserir", "Atualizar", "Excluir"])
-        with tab1: ManterClienteUI.listar()
-        with tab2: ManterClienteUI.inserir()
-        with tab3: ManterClienteUI.atualizar()
-        with tab4: ManterClienteUI.excluir()
-
-    def listar():
-        clientes = View.cliente_listar()
-        if len(clientes) == 0: 
-            st.write("Nenhum cliente cadastrado")
-        else:    
-            #for obj in clientes: st.write(obj)
-            dic = []
-            for obj in clientes: dic.append(obj.__dict__)
-            df = pd.DataFrame(dic)
-            st.dataframe(df)
-
-    def inserir():
-        nome = st.text_input("Informe o nome do cliente")
-        email = st.text_input("Informe o e-mail")
-        fone = st.text_input("Informe o fone")
-        senha = st.text_input("Informe a senha", type="password")
-
-        if st.button("Inserir"):
-            View.cliente_inserir(nome, email, fone, senha)
-            st.success("Cliente inserido com sucesso")
+        print("Cadastro de Clientes")
+        print("1 - Listar Clientes")
+        print("2 - Inserir Cliente")
+        print("3 - Atualizar Cliente")
+        print("4 - Excluir Cliente")
+        print("9 - Finalizar programa")
+        
+        op = int(input("Escolha uma opção: "))
+        if op == 1: 
+            ManterClienteUI.cliente_listar()
+        elif op == 2: 
+            ManterClienteUI.cliente_inserir()
+        elif op == 3: 
+            ManterClienteUI.cliente_atualizar()
+        elif op == 4: 
+            ManterClienteUI.cliente_excluir()
+        elif op == 9:
+            print("Programa finalizado.")
+            return
+        else:
+            print("Opção inválida")
             time.sleep(2)
-            st.rerun()
+            ManterClienteUI.main()
 
-    def atualizar():
-        clientes = View.cliente_listar()
-        if len(clientes) == 0: 
-            st.write("Nenhum cliente cadastrado")
-        else:
-            op = st.selectbox("Atualização de cliente", clientes)
-            nome = st.text_input("Informe o novo nome do cliente", op.nome)
-            email = st.text_input("Informe o novo e-mail", op.email)
-            fone = st.text_input("Informe o novo fone", op.fone)
-            senha = st.text_input("Informe a nova senha", op.senha, type="password")
-            if st.button("Atualizar"):
-                View.cliente_atualizar(op.id, nome, email, fone, senha)
-                st.success("Cliente atualizado com sucesso")
-                time.sleep(2)
-                st.rerun()
+    @staticmethod 
+    def cliente_inserir():
+        nome = input("Informe o nome: ")
+        email = input("Informe o e-mail: ")
+        fone = input("Informe o fone: ")
+        senha = input("Informe a senha: ")
 
-    def excluir():
-        clientes = View.cliente_listar()
-        if len(clientes) == 0: 
-            st.write("Nenhum cliente cadastrado")
+        confirmar = input("Confirmar cadastro? (s/n): ")
+        if confirmar.lower() == "s":
+            View.cliente_inserir(nome, email, fone, senha)
+            print("Cliente adicionado com sucesso!")
         else:
-            op = st.selectbox("Exclusão de cliente", clientes)
-            if st.button("Excluir"):
-                View.cliente_excluir(op.id)
-                st.success("Cliente excluído com sucesso")
-                time.sleep(2)
-                st.rerun()
+            print("Cadastro cancelado.")
+        time.sleep(2)
+        ManterClienteUI.main()
+
+    @staticmethod 
+    def cliente_listar():
+        clientes = View.cliente_listar()
+        if len(clientes) == 0:
+            print("Nenhum cliente cadastrado")
+        else:
+            for cliente in clientes:
+                print(f"ID: {cliente.get_id()} | Nome: {cliente.get_nome()} | E-mail: {cliente.get_email()} | Fone: {cliente.get_fone()} | Senha: {cliente.get_senha()}")
+        time.sleep(2)
+        ManterClienteUI.main()
+
+    @staticmethod 
+    def cliente_atualizar():
+        clientes = View.cliente_listar()
+        if len(clientes) == 0:
+            print("Nenhum cliente cadastrado")
+        else:
+            for i, cliente in enumerate(clientes, 1):
+                print(f"{i} - {cliente.get_nome()}")
+            selecao = int(input("Escolha o número do cliente para atualizar: ")) - 1
+            selecionado = clientes[selecao]
+
+            nome = input(f"Informe o novo nome ({selecionado.get_nome()}): ")
+            email = input(f"Informe o novo e-mail ({selecionado.get_email()}): ")
+            fone = input(f"Informe o novo fone ({selecionado.get_fone()}): ")
+            senha = input(f"Informe a nova senha ({selecionado.get_senha()}): ")
+
+            confirmar = input("Confirmar atualização? (s/n): ")
+            if confirmar.lower() == "s":
+                View.cliente_atualizar(selecionado.get_id(), nome, email, fone, senha)
+                print("Cliente atualizado com sucesso!")
+            else:
+                print("Atualização cancelada.")
+        time.sleep(2)
+        ManterClienteUI.main()
+
+    @staticmethod 
+    def cliente_excluir():
+        clientes = View.cliente_listar()
+        if len(clientes) == 0:
+            print("Nenhum cliente cadastrado")
+        else:
+            for i, cliente in enumerate(clientes, 1):
+                print(f"{i} - {cliente.get_nome()}")
+            selecao = int(input("Escolha o número do cliente para excluir: ")) - 1
+            selecionado = clientes[selecao]
+
+            confirmar = input(f"Tem certeza que deseja excluir {selecionado.get_nome()}? (s/n): ")
+            if confirmar.lower() == "s":
+                View.cliente_excluir(selecionado.get_id())
+                print("Cliente excluído com sucesso!")
+            else:
+                print("Exclusão cancelada.")
+        time.sleep(2)
+        ManterClienteUI.main()
+
+# Inicia a execução
+ManterClienteUI.main()
